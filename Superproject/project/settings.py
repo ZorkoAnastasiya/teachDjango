@@ -125,4 +125,4 @@ CORS_ALLOW_HEADERS = [
     "x-user",
 ]
 
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
