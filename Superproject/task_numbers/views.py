@@ -33,12 +33,15 @@ def add_number(name, number):
 @csrf_exempt
 def handler(request: HttpRequest) -> HttpResponse:
 
+    if request.method != "POST":
+        return HttpResponse(status = 405)
+
     user = request.COOKIES.get("user")
     if user is None:
         user = os.urandom(16).hex()
 
     try:
-        text = request.body.decode() or request.GET["text"]
+        text = request.body.decode()
     except MultiValueDictKeyError:
         text = ''
 

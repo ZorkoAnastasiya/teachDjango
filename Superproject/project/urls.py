@@ -11,5 +11,5 @@ def hello_world(request: HttpRequest):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("hw/", hello_world),
-    path("task/", handler),
+    path("task4/", handler),
 ]
