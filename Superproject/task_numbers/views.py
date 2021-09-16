@@ -43,10 +43,8 @@ def parse_data(
 
 
 @csrf_exempt
+@require_http_methods(["POST"])
 def handler(request: HttpRequest) -> HttpResponse:
-
-    if request.method != "POST":
-        return HttpResponse("Доступный метод: POST.", status = 405)
 
     user = request.headers.get("X-USER")
     if not user:
