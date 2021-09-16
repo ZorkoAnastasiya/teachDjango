@@ -1,57 +1,61 @@
-import os
+import json
+from json import JSONDecodeError
+from typing import Union
 from django.http import HttpRequest, HttpResponse
-from django.utils.datastructures import MultiValueDictKeyError
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 from task_numbers.models import Numbers
 
 
-def get_number(name):
+def get_data(name: str, number: int) -> int:
     try:
-        obj = Numbers.objects.get(name=name)
-        number = obj.number
-        return number
-    except Numbers.DoesNotExist:
-        obj = Numbers(name=name, number=0)
+        obj = Numbers.objects.get(name = name)
+        obj.number += number
         obj.save()
+        return obj.number
+    except Numbers.DoesNotExist:
+        obj = Numbers(name = name, number = number)
+        obj.save()
+        return obj.number
+
+
+def parse_data(data: Union[str, int], user: str) -> Union[int, None]:
+    if isinstance(data, int):
+        more, smaller = -100, 100
+        if not (more <= data <= smaller):
+            return
+        message = get_data(user, data)
+        return message
+    else:
+        if data != 'stop':
+            return
         number = 0
-        return number
-
-
-def add_number(name, number):
-    try:
-        obj = Numbers.objects.get(name=name)
-        number = obj.number + int(number)
-        obj.number = number
-        obj.save()
-        return number
-    except Numbers.DoesNotExist:
-        obj = Numbers(name=name, number=number)
-        obj.save()
-        return number
+        message = get_data(user, number)
+        return message
 
 
 @csrf_exempt
+@require_http_methods(["POST"])
 def handler(request: HttpRequest) -> HttpResponse:
-
     if request.method != "POST":
-        return HttpResponse(status = 405)
+        return HttpResponse("Доступный метод: POST.", status = 405)
 
-    user = request.COOKIES.get("user")
-    if user is None:
-        user = os.urandom(16).hex()
+    user = request.headers.get("X-USER")
+    if not user:
+        return HttpResponse("Пройдите авторизацию.", status = 403)
 
     try:
-        text = request.body.decode()
-    except MultiValueDictKeyError:
-        text = ''
+        data = json.loads(request.body)
+        message = parse_data(data, user)
+    except JSONDecodeError:
+        return HttpResponse("Нет данных", status = 422)
 
-    if text == "stop":
-        message = get_number(user)
-    elif text.isdigit():
-        message = add_number(user, text)
-    else:
-        message = "Нет данных!"
+    if message is None:
+        return HttpResponse(
+            "Разрешенный тип данных: целое число от -100 до 100 или слово stop.",
+            status = 422
+        )
 
-    response = HttpResponse(f"Твое текущее число: {message}")
-    response.set_cookie("user", user)
+    response = HttpResponse(message)
+    response.headers["x-user"] = user
     return response

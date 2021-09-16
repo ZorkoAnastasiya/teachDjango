@@ -2,6 +2,6 @@ Django
 dj-database-url
 psycopg2-binary
 django_heroku
-gunicorn
 django-cors-headers
 whitenoise
+uvicorn

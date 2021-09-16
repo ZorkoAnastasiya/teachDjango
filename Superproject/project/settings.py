@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "1"
 
-DEBUG = True
+DEBUG = bool(os.getenv("DEBUG"))
 
 ALLOWED_HOSTS = []
 
@@ -125,4 +125,5 @@ CORS_ALLOW_HEADERS = [
     "x-user",
 ]
 
-django_heroku.settings(locals())
+if not DEBUG:
+    django_heroku.settings(locals())
