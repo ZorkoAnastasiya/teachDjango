@@ -7,7 +7,11 @@ from django.views.decorators.http import require_http_methods
 from task_numbers.models import Numbers
 
 
-def get_data(name: str, number: int) -> int:
+def get_data(
+        name: str,
+        number: int
+) -> int:
+
     try:
         obj = Numbers.objects.get(name = name)
         obj.number += number
@@ -19,7 +23,11 @@ def get_data(name: str, number: int) -> int:
         return obj.number
 
 
-def parse_data(data: Union[str, int], user: str) -> Union[int, None]:
+def parse_data(
+        data: Union[str, int],
+        user: str
+) -> Union[int, None]:
+
     if isinstance(data, int):
         more, smaller = -100, 100
         if not (more <= data <= smaller):
@@ -37,8 +45,6 @@ def parse_data(data: Union[str, int], user: str) -> Union[int, None]:
 @csrf_exempt
 @require_http_methods(["POST"])
 def handler(request: HttpRequest) -> HttpResponse:
-    if request.method != "POST":
-        return HttpResponse("Доступный метод: POST.", status = 405)
 
     user = request.headers.get("X-USER")
     if not user:
