@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.http import HttpRequest, HttpResponse
-from django.urls import path
-from task_numbers.views import handler, ShowNumbersView
+from django.urls import path, include
 
 
 def hello_world(request: HttpRequest):
@@ -11,6 +10,5 @@ def hello_world(request: HttpRequest):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("hw/", hello_world),
-    path("task4/", handler),
-    path("task4/info/", ShowNumbersView.as_view()),
+    path("task4/", include("task_numbers.urls")),
 ]

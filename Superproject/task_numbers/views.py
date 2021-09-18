@@ -2,11 +2,9 @@ import json
 from json import JSONDecodeError
 from typing import Union
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView
-
 from task_numbers.models import Numbers
 
 
@@ -71,5 +69,6 @@ def handler(request: HttpRequest) -> HttpResponse:
 
 
 class ShowNumbersView(ListView):
-    template_name = "task_numbers/hw.html"
+    template_name = "task_numbers/tn.html"
     model = Numbers
+
