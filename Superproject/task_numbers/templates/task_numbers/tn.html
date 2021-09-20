@@ -5,6 +5,14 @@
         <title>Task Numbers</title>
     </head>
     <body>
-    {{object_list}}
+        <h1>Data Base: Numbers</h1>
+        <hr>
+        <div>
+            <ol>
+            {% for item in object_list %}
+                <li>Name &#42889; {{item.name}} &#8210; Number &#42889; {{item.number}}</li>
+            {% endfor %}
+            </ol>
+        </div>
     </body>
 </html>

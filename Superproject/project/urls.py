@@ -4,7 +4,7 @@ from django.urls import path, include
 
 
 def hello_world(request: HttpRequest):
-    return HttpResponse("Hello World")
+    return HttpResponse("<h1>Hello World</h1>")
 
 
 urlpatterns = [
