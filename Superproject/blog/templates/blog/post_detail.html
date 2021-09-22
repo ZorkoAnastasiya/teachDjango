@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+<div>
+    <h1>{{object.title}}</h1>
+    <a href="/blog/">(back to all post)</a>
+    <section>
+        <hr>
+        <p>{{object.content|default:"(no content)"}}</p>
+        <p>{{object.created_at|date:"Y-m-d H:i"}}</p>
+    </section>
+</div>
+</body>
+</html>

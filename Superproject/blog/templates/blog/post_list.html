@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+<div>
+    <h1>All Posts</h1>
+    <hr>
+    {% for post in object_list %}
+    <section id="id_post_{{post.pk}}">
+        <a href ="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
+        <p>{{post.content|default:"(no content)"}}</p>
+        <p>{{post.created_at|date:"Y-m-d H:i"}}</p>
+        <hr>
+        {% empty %}
+        <p>No content</p>
+    </section>
+    {% endfor %}
+</div>
+</body>
+</html>
