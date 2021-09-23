@@ -1,23 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog</title>
-</head>
-<body>
-<div>
-    <h1>All Posts</h1>
-    <hr>
-    {% for post in object_list %}
-    <section id="id_post_{{post.pk}}">
-        <a href ="{{post.get_absolute_url}}"><h2>{{post.title}}</h2></a>
-        <p>{{post.content|default:"(no content)"}}</p>
-        <p>{{post.created_at|date:"Y-m-d H:i"}}</p>
-        <hr>
-        {% empty %}
-        <p>No content</p>
-    </section>
-    {% endfor %}
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+
+    {{header}}: {{block.super}}
+
+{% endblock %}
+
+{% block sidebar %}
+<h1>All Posts</h1>
+{% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+     <div class="card mb-3">
+         <div class="card-header">
+             Rubric: <a href="{{post.rubric.get_absolute_url}}">{{post.rubric}}</a>
+         </div>
+         <div class="card-body">
+             <div class="media">
+                 {% if post.photo %}
+                 <img src="{{post.photo.url}}" alt="" width="350" class="mr-3" align="left" style="margin:4px 10px 2px 0px;">
+                 {% else %}
+                 <img src="https://picsum.photos/id/1060/350/235/?blur=2" alt="" class="mr-3" align="left" style="margin:4px 10px 2px 0px;">
+                 {% endif %}
+                 <div class="media-body">
+                     <h5 class="card-title">{{post.title}}</h5>
+                     <p class="card-text">{{post.content|linebreaks|truncatewords:70}}</p>
+                     <a href="{{post.get_absolute_url}}" class="btn btn-primary">Read more...</a>
+                 </div>
+             </div>
+         </div>
+         <div class="card-footer text-muted">
+             {{post.created_at|date:"Y-m-d H:i"}}
+         </div>
+     </div>
+     {% empty %}
+     <p>No content</p>
+     {% endfor %}
+{% endblock %}

@@ -1,18 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Blog</title>
-</head>
-<body>
-<div>
-    <h1>{{object.title}}</h1>
-    <a href="/blog/">(back to all post)</a>
-    <section>
-        <hr>
-        <p>{{object.content|default:"(no content)"}}</p>
-        <p>{{object.created_at|date:"Y-m-d H:i"}}</p>
-    </section>
+{% extends 'base.html' %}
+
+{% block title %}
+
+    {{post_item.title}}: {{block.super}}
+
+{% endblock %}
+
+{% block sidebar %}
+<h1>{{post_item.title}}</h1>
+{% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card mb-3">
+    <div class="card-header">
+        Rubric: <a href="{{post_item.rubric.get_absolute_url}}">{{post_item.rubric}}</a>
+    </div>
+    <div class="card-body">
+        <div class="media">
+            {% if post_item.photo %}
+            <img src="{{post_item.photo.url}}" alt="" width="350" class="mr-3" align="left" style="margin:4px 10px 2px 0px;">
+            {% else %}
+            <img src="https://picsum.photos/id/1060/350/235/?blur=2" alt="" class="mr-3" align="left" style="margin:4px 10px 2px 0px;">
+            {% endif %}
+            <div class="media-body">
+                <h5 class="card-title">{{post_item.title}}</h5>
+                <p class="card-text">{{post_item.content|linebreaks}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+        {{post_item.created_at|date:"Y-m-d H:i"}}
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}

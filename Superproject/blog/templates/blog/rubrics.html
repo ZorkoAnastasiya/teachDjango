@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+   Rubric: {{rubric.title}}
+
+{% endblock %}
+
+{% block sidebar %}
+<h1>{{rubric.title}}</h1>
+{% include 'include/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-header">
+            Rubric: {{post.rubric}}
+        </div>
+        <div class="card-body">
+            <div class="media">
+                {% if post.photo %}
+                <img src="{{post.photo.url}}" alt="" width="350" class="mr-3" align="left" style="margin:4px 10px 2px 0px;">
+                {% else %}
+                <img src="https://picsum.photos/id/1060/350/235/?blur=2" alt="" class="mr-3" align="left" style="margin:4px 10px 2px 0px;">
+                {% endif %}
+                <div class="media-body">
+                    <h5 class="card-title">{{post.title}}</h5>
+                    <p class="card-text">{{post.content|linebreaks|truncatewords:70}}</p>
+                    <a href="{{post.get_absolute_url}}" class="btn btn-primary">Read more...</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            {{post.created_at|date:"Y-m-d H:i"}}
+        </div>
+    </div>
+    {% empty %}
+    <p>No content</p>
+    {% endfor %}
+{% endblock %}
