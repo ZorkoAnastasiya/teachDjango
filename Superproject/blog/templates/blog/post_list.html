@@ -2,17 +2,17 @@
 
 {% block title %}
 
-    {{header}}: {{block.super}}
+    {{title}}: {{block.super}}
 
 {% endblock %}
 
 {% block sidebar %}
-<h1>All Posts</h1>
+<h1>{{header}}</h1>
 {% include 'include/_sidebar.html' %}
 {% endblock %}
 
 {% block content %}
-    {% for post in posts %}
+    {% for post in object_list %}
      <div class="card mb-3">
          <div class="card-header">
              Rubric: <a href="{{post.rubric.get_absolute_url}}">{{post.rubric}}</a>
