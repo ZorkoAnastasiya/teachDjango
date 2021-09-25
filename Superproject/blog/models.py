@@ -1,5 +1,5 @@
 from django.db import models
-from django.urls import reverse
+from django.urls import reverse_lazy
 
 
 class Rubrics(models.Model):
@@ -10,7 +10,7 @@ class Rubrics(models.Model):
         return self.title
 
     def get_absolute_url(self) -> str:
-        return reverse("rubric", kwargs = {"rubric_id": self.pk})
+        return reverse_lazy("rubric", kwargs = {"rubric_id": self.pk})
 
     class Meta:
         verbose_name = "Rubric"
@@ -32,7 +32,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self) -> str:
-        return reverse("single_post", kwargs = {"pk": self.pk})
+        return reverse_lazy("single_post", kwargs = {"pk": self.pk})
 
     class Meta:
         verbose_name = "Post"
