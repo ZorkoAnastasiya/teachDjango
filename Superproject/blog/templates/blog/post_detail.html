@@ -27,8 +27,8 @@
                 <h5 class="card-title">{{object.title}}</h5>
                 <p class="card-text">{{object.content|linebreaks}}</p>
                 <p align="right">
-                    <a href="/blog/{{object.pk}}/update" class="btn btn-outline-primary">Edit Post</a>
-                    <a href="/blog/{{object.pk}}/delete" class="btn btn-outline-danger">Delete</a>
+                    <a href="{% url 'blog:update_post' object.pk %}" class="btn btn-outline-primary">Edit Post</a>
+                    <a href="{% url 'blog:delete_post' object.pk %}" class="btn btn-outline-danger">Delete</a>
                 </p>
             </div>
         </div>

@@ -9,9 +9,19 @@ class NewPostForm(forms.ModelForm):
         model = Post
         fields = ["title", "content", "hidden", "rubric"]
         widgets = {
-            "title": forms.TextInput(attrs = {"class": "form-control"}),
-            "content": forms.Textarea(attrs = {"class": "form-control", "rows": 5}),
-            "rubric": forms.Select(attrs = {"class": "form-control"}),
+            "title": forms.TextInput(attrs = {
+                "class": "form-control"
+            }
+            ),
+            "content": forms.Textarea(attrs = {
+                "class": "form-control",
+                "rows": 7
+            }
+            ),
+            "rubric": forms.Select(attrs = {
+                "class": "form-control"
+            }
+            ),
         }
 
     def clean_title(self):
