@@ -14,13 +14,17 @@ class AllPostView(ListView):
         "title": "Home page",
         "header": "All Post"
     }
+    paginate_by = 4
 
     def get_queryset(self):
-        return self.model.objects.filter(hidden=False)
+        return self.model.objects.filter(
+            hidden=False
+        ).select_related('rubric')
 
 
 class RubricsPostView(ListView):
     model = Post
+    paginate_by = 2
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,7 +37,7 @@ class RubricsPostView(ListView):
         return self.model.objects.filter(
             rubric_id=self.kwargs['rubric_id'],
             hidden=False
-        )
+        ).select_related('rubric')
 
 
 class SinglePostView(DetailView):
