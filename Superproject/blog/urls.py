@@ -12,4 +12,7 @@ urlpatterns = [
     path("<int:pk>/update/", views.UpdatePostView.as_view(), name="update_post"),
     path("<int:pk>/delete/", views.DeletePostView.as_view(), name="delete_post"),
     path("add_post/", views.CreatePostView.as_view(), name= "create_post"),
+    path("register/", views.register, name="register"),
+    path("login/", views.user_login, name= "login"),
+    path("logout/", views.user_logout, name= "logout"),
 ]
