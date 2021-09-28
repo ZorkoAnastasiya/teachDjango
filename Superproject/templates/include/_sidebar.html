@@ -1,13 +1,2 @@
 {% load blog_tags %}
-{% comment %}
-<div class="list-group">
-    {% list_rubrics as rubrics %}
-    {% for item in rubrics %}
-        <a href="{% url 'rubric' item.pk %}" class="list-group-item list-group-item-action">{{item.title}}</a>
-    {% endfor %}
-</div>
-
-<br>
-{% endcomment %}
-
 {% show_rubrics %}

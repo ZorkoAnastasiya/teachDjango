@@ -7,6 +7,8 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "rubric", "created_at", "hidden")
     list_display_links = ("id", "title")
     search_fields = ("title", "content")
+    save_as = True
+    save_on_top = True
     list_editable = ("hidden",)
     list_filter = ("hidden", "rubric")
 

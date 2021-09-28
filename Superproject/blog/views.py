@@ -1,16 +1,14 @@
 from django.http import HttpRequest
 from django.urls import reverse_lazy
-from django.views.generic import ListView
-from django.views.generic import DetailView
-from django.views.generic import CreateView
-from django.views.generic import UpdateView
+from django.views.generic import ListView, DetailView
+from django.views.generic import CreateView, UpdateView
 from django.views.generic import DeleteView
-from blog.models import Post, Rubrics
-from blog.forms import NewPostForm, UserRegisterForm, UserLoginForm
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from blog.models import Post, Rubrics
+from blog.forms import NewPostForm, UserRegisterForm, UserLoginForm
 
 
 class AllPostView(ListView):
