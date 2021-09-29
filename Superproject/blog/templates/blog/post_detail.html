@@ -15,6 +15,7 @@
 <div class="card mb-3">
     <div class="card-header">
         Rubric: <a href="{{object.rubric.get_absolute_url}}">{{object.rubric}}</a>
+        <p class="card-header" align="right">{{post.author}}</p>
     </div>
     <div class="card-body">
         <div class="media">
@@ -26,7 +27,7 @@
             <div class="media-body">
                 <h5 class="card-title">{{object.title}}</h5>
                 <p class="card-text">{{object.content|linebreaks}}</p>
-                {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated and object.author == request.user %}
                 <p align="right">
                     <a href="{% url 'blog:update_post' object.pk %}" class="btn btn-outline-primary">Edit Post</a>
                     <a href="{% url 'blog:delete_post' object.pk %}" class="btn btn-outline-danger">Delete</a>

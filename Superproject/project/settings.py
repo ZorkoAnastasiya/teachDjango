@@ -132,5 +132,7 @@ CORS_ALLOW_HEADERS = [
     "x-user",
 ]
 
+LOGIN_REDIRECT_URL = "blog:home"
+
 if not DEBUG:
     django_heroku.settings(locals())

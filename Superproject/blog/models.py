@@ -1,5 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse_lazy
+
+
+User = get_user_model()
 
 
 class Rubrics(models.Model):
@@ -44,6 +48,7 @@ class Post(models.Model):
         on_delete = models.PROTECT,
         null = True
     )
+    author = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
 
     def __str__(self):
         return self.title

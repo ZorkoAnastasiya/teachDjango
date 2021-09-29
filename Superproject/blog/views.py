@@ -25,6 +25,19 @@ class AllPostView(ListView):
         ).select_related('rubric')
 
 
+class AllMyPostView(ListView):
+    model = Post
+    extra_context = {
+        "title": "My Post",
+        "header": "My Post"
+    }
+    paginate_by = 2
+
+    def get_queryset(self):
+        author = self.request.user
+        return self.model.objects.filter(author=author)
+
+
 class RubricsPostView(ListView):
     model = Post
     paginate_by = 2
@@ -59,6 +72,12 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     }
     login_url = "blog:login"
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return super().form_valid(form)
+
 
 class UpdatePostView(LoginRequiredMixin, UpdateView):
     model = Post
@@ -69,11 +88,19 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
     }
     login_url = "blog:login"
 
+    def get_queryset(self):
+        author = self.request.user
+        return self.model.objects.filter(author=author)
+
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog:home')
     login_url = "blog:login"
+
+    def get_queryset(self):
+        author = self.request.user
+        return self.model.objects.filter(author=author)
 
 
 def register(request: HttpRequest):
