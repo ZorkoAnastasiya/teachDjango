@@ -15,7 +15,7 @@ class AllPostView(ListView):
     model = Post
     extra_context = {
         "title": "Home page",
-        "header": "All Post"
+        "header": "All Posts"
     }
     paginate_by = 4
 
