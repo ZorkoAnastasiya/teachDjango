@@ -1,11 +1,11 @@
-from django.http import HttpRequest
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
 from django.views.generic import CreateView, UpdateView
-from django.views.generic import DeleteView
-from django.shortcuts import render, redirect
+from django.views.generic import DeleteView, FormView
 from django.contrib import messages
-from django.contrib.auth import login, logout
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from blog.models import Post, Rubrics
 from blog.forms import NewPostForm, UserRegisterForm, UserLoginForm
@@ -35,7 +35,7 @@ class AllMyPostView(ListView):
 
     def get_queryset(self):
         author = self.request.user
-        return self.model.objects.filter(author=author)
+        return super().get_queryset().filter(author=author)
 
 
 class RubricsPostView(ListView):
@@ -60,7 +60,7 @@ class SinglePostView(DetailView):
     model = Post
 
     def get_queryset(self):
-        return self.model.objects.filter(hidden=False)
+        return super().get_queryset().filter(hidden=False)
 
 
 class CreatePostView(LoginRequiredMixin, CreateView):
@@ -90,7 +90,7 @@ class UpdatePostView(LoginRequiredMixin, UpdateView):
 
     def get_queryset(self):
         author = self.request.user
-        return self.model.objects.filter(author=author)
+        return super().get_queryset().filter(author=author)
 
 
 class DeletePostView(LoginRequiredMixin, DeleteView):
@@ -100,36 +100,28 @@ class DeletePostView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         author = self.request.user
-        return self.model.objects.filter(author=author)
+        return super().get_queryset().filter(author=author)
 
 
-def register(request: HttpRequest):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            messages.success(request, "You have successfully registered!")
-            return redirect('blog:home')
-        else:
-            messages.error(request, "Registration error")
-    else:
-        form = UserRegisterForm()
-    return render(request, "blog/register.html", {"form": form})
+class UserRegisterView(SuccessMessageMixin, FormView):
+    form_class = UserRegisterForm
+    template_name = "blog/register.html"
+    success_message = 'You have successfully registered!'
+    success_url = reverse_lazy("blog:home")
+
+    def form_valid(self, form):
+        form.save()
+        username = self.request.POST['username']
+        password = self.request.POST['password1']
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        message = messages.error(self.request, "Registration error")
+        return self.render_to_response(self.get_context_data(form = form, message=message))
 
 
-def user_login(request: HttpRequest):
-    if request.method == 'POST':
-        form = UserLoginForm(data = request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect("blog:home")
-    else:
-        form = UserLoginForm()
-    return render(request, "blog/login.html", {"form": form})
-
-
-def user_logout(request: HttpRequest):
-    logout(request)
-    return redirect("blog:login")
+class UserLoginView(LoginView):
+    form_class = UserLoginForm
+    template_name = "blog/login.html"
