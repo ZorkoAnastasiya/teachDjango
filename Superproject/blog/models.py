@@ -24,8 +24,8 @@ class Rubrics(models.Model):
             kwargs = {"rubric_id": self.pk})
 
     class Meta:
-        verbose_name = "Rubric"
-        verbose_name_plural = "Rubrics"
+        verbose_name = "rubric"
+        verbose_name_plural = "rubrics"
         ordering = ["id"]
 
 
@@ -57,6 +57,6 @@ class Post(models.Model):
         return reverse_lazy("blog:single_post", kwargs = {"pk": self.pk})
 
     class Meta:
-        verbose_name = "Post"
-        verbose_name_plural = "Posts"
+        verbose_name = "post"
+        verbose_name_plural = "posts"
         ordering = ["-created_at", "title"]
